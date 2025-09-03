@@ -8,7 +8,9 @@ const isAuth = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.userId; // Ensure your token was signed with { userId }
+    console.log(decoded)
+    req.userId = decoded.id; // Ensure your token was signed with { userId }
+    console.log(req.userId)
     next();
   } catch (error) {
     return res.status(401).json({ message: "Token is not valid" });
