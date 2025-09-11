@@ -50,7 +50,7 @@ export const signUp = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
-    res.status(201).json({ message: "User created successfully" });
+    res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ message: "Sign Up Error" });
   }
@@ -88,7 +88,7 @@ export const signIn = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
-    res.status(201).json({ message: "User Logged In Successfully" });
+    res.status(201).json(user);
   } catch (error) {
     res.status(500).json({ message: "Sign In Error" });
   }

@@ -15,8 +15,13 @@ const PORT = process.env.PORT || 8001;
 connectDB();
 
 // Middleware
-app.use(cors());
+
 app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:5173', // Replace with your frontend URL
+
+  credentials: true, // Allow cookies to be sent
+}));
 
 
 
@@ -27,11 +32,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use(cookieParser());
-app.use(cors({
-  origin: 'http://localhost:5173', // Replace with your frontend URL
-  withCredentials: true,
-  credentials: true, // Allow cookies to be sent
-}));
+
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);

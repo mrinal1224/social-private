@@ -1,8 +1,51 @@
-import React from "react";
+import React , {useState} from "react";
 import logo1 from "../assets/socialLogo.png"
 import logo2 from '../assets/logo2.png'
+import ClipLoader from "react-spinners/ClipLoader";
+import {Link, useNavigate} from 'react-router-dom'
+import { useDispatch } from "react-redux";
+
+
+
+
+
+import { signUpUser } from "../apiCalls/authCalls";
+import { setUserData } from "../redux/userSlice";
+
 
 function SignUp() {
+   const [name , setName] = useState("");
+   const [userName , setUserName] = useState("");
+   const [email , setEmail] = useState("");
+   const [password , setPassword] = useState("");
+   const [loading , setLoading] = useState(false);
+ 
+   const navigate = useNavigate();
+
+   const dispatch = useDispatch()
+
+
+
+   const handleSignUp = async () => {
+    setLoading(true);
+    try {
+      const data = await signUpUser({ name, userName, email, password });
+      console.log("Signup Success:", data);
+      dispatch(setUserData(data))
+      setLoading(false);
+      
+      // Optionally, redirect to another page or show a success message here   
+      navigate('/home'); // Redirect to Home or any other page
+
+    } catch (error) {
+      console.error("Signup Error:", error);
+      setLoading(false);
+      // Optionally, show an error message to the user here
+      alert(error); 
+    }
+  };
+
+
   return (
     <div>
       <div className="w-full min-h-screen        bg-[radial-gradient(1200px_800px_at_10%_-10%,#f58529_0%,transparent_35%),radial-gradient(1200px_800px_at_110%_0%,#dd2a7b_0%,transparent_40%),radial-gradient(900px_700px_at_50%_110%,#8134af_0%,transparent_45%),linear-gradient(180deg,#515bd4,#8134af)] flex flex-col justify-center items-center">
@@ -27,6 +70,8 @@ function SignUp() {
                 id="name"
                 className="w-full h-full rounded-md px-4 outline-none border-0 text-sm text-gray-900 placeholder-gray-400 bg-transparent"
                 required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
 
@@ -44,6 +89,8 @@ function SignUp() {
                 id="userName"
                 className="w-full h-full rounded-md px-4 outline-none border-0 text-sm text-gray-900 placeholder-gray-400 bg-transparent"
                 required
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
               />
             </div>
 
@@ -61,6 +108,8 @@ function SignUp() {
                 id="email"
                 className="w-full h-full rounded-md px-4 outline-none border-0 text-sm text-gray-900 placeholder-gray-400 bg-transparent"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -78,19 +127,22 @@ function SignUp() {
                 id="password"
                 className="w-full h-full rounded-md px-4 outline-none border-0 text-sm text-gray-900 placeholder-gray-400 bg-transparent"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
             <button
               className="w-[70%] h-[44px] bg-[#0095f6] text-white font-semibold rounded-lg mt-4 hover:opacity-90 active:scale-[.99] transition shadow-sm"
+              onClick={handleSignUp} disabled={loading}
             >
-               Sign Up
+            {loading?<ClipLoader size={30} color='white' loading={loading}/>:"Sign Up"}
             </button>
 
             <p className="cursor-pointer text-gray-700 text-sm">
               Already Have An Account?{" "}
               <span className="border-b border-gray-800 pb-[2px] text-gray-900 hover:opacity-80">
-                Sign In
+               <Link to="/signin"> Sign In</Link>
               </span>
             </p>
           </div>

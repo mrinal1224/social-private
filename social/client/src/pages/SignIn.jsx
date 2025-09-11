@@ -1,8 +1,43 @@
-import React from "react";
+import React , {useState} from "react";
 import logo from "../assets/socialLogo.png";
 import logo2 from "../assets/logo2.png";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
+import { loginUser } from "../apiCalls/authCalls";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/userSlice";
+
+
 
 function SignIn() {
+
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+ 
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      const data = await loginUser({ userName, password });
+      console.log("Login Success:", data);
+      dispatch(setUserData(data))
+      setLoading(false);
+      // Optionally, redirect to another page or show a success message here
+      navigate('/home'); // Redirect to Home or any other page
+   
+    } catch (error) {
+      console.error("Login Error:", error);
+      setLoading(false);
+      // Optionally, show an error message to the user here
+      alert(error);
+      
+    }
+  };
+
   return (
     <div
       className="
@@ -39,18 +74,23 @@ function SignIn() {
               placeholder="Username"
               className="w-[95%] h-[44px] px-3 rounded-md border border-neutral-300 bg-neutral-50 text-neutral-900 text-sm focus:outline-none focus:border-neutral-400"
               required
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
             />
             <input
               id="password"
               placeholder="Password"
               className="w-[95%] h-[44px] px-3 rounded-md border border-neutral-300 bg-neutral-50 text-neutral-900 text-sm focus:outline-none focus:border-neutral-400"
-              required
+              required  
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
           {/* Forgot password */}
           <div className="w-[95%] text-right mt-1 text-sm text-[#0095F6] cursor-pointer hover:underline">
-            Forgot Password?
+           <Link to="/forgot-password">Forgot Password?</Link>
           </div>
 
           {/* Button */}
@@ -61,15 +101,17 @@ function SignIn() {
               hover:bg-[#0086dd] active:scale-[0.99] transition
               shadow-[0_6px_16px_rgba(0,149,246,0.35)]
             "
+            onClick={handleLogin}
+            disabled={loading}
           >
-            Sign In
+            {loading ? <ClipLoader size={30} color="white" loading={loading}  /> : "Sign In"}
           </button>
 
           {/* Footer text */}
           <p className="text-neutral-500 text-sm mt-3">
             Want to create a new account?{" "}
             <span className="text-neutral-900 font-medium underline underline-offset-4">
-              Sign Up
+            <Link to="/signup"> Sign Up</Link>
             </span>
           </p>
         </div>
