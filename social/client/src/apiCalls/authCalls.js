@@ -46,6 +46,16 @@ export const getCurrentUser = async ()=>{
 };  
 
 
+export const getProfile = async(userName)=>{
+  try {
+    const response =  await api.get(`/api/user/getProfile/${userName}` , {withCredentials:true})
+    return response.data
+  } catch (error) {
+     throw error.response?.data?.message || "Failed to fetch user profile data";
+  }
+}
+
+
 
 
 

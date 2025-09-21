@@ -20,13 +20,22 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    profilePicture: {
+    profileImage: {
       type: String,
       default: "",
     },
     bio: {
       type: String,
       default: "",
+    },
+
+    profession: {
+      type: String,
+    },
+
+    gender:{
+      type:String,
+      enum:['male' , 'female']
     },
 
     followers: [
@@ -61,10 +70,8 @@ const userSchema = new mongoose.Schema(
         ref: "Story",
       },
     ],
-
-    
   },
-  
+
   { timestamps: true }
 );
 

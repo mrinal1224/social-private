@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import fs from 'fs'
+import fs from "fs";
 
 const uploadOnCloud = async (file) => {
   try {
@@ -13,12 +13,11 @@ const uploadOnCloud = async (file) => {
       resource_type: "auto",
     });
 
-    fs.unlinkSync(file)
-
-
+    fs.unlinkSync(file);
 
     return result.secure_url;
   } catch (error) {
+    fs.unlinkSync(file);
     console.error(error);
   }
 };

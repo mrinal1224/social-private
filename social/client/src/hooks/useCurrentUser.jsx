@@ -12,7 +12,7 @@ function useCurrentUser() {
     const fetchUser = async () => {
       try {
         const result = await getCurrentUser();
-        console.log("Current User:", result);
+        console.log("Current User:", result.user);
         dispatch(setUserData(result));
       } catch (error) {
         console.error("Error fetching user:", error);

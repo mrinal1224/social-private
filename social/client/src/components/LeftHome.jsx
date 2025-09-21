@@ -3,7 +3,7 @@ import React from "react";
 import logo from "../assets/socialLogo.png";
 
 
-function LeftHomeDesign() {
+function LeftHome() {
   return (
     <div
       className="
@@ -70,4 +70,4 @@ function LeftHomeDesign() {
   );
 }
 
-export default LeftHomeDesign;
+export default LeftHome;

@@ -8,6 +8,7 @@ import Landing from './pages/Landing'
 import { useSelector } from 'react-redux'
 import useCurrentUser from './hooks/useCurrentuser'
 import { Navigate } from 'react-router-dom'
+import Profile from './pages/Profile'
 
 
 
@@ -22,6 +23,9 @@ function App() {
         <Route path='/signin' element={!userData?<SignIn/>:<Navigate to='/home'/>}/>
         <Route path='/forgot-password' element={!userData?<ForgotPassword/>:<Navigate to='/home'/>}/>
         <Route path='/home' element={userData?<Home/>:<Navigate to='/signin'/>}/>
+         <Route path='/profile/:userName' element={userData?<Profile/>:<Navigate to='/signin'/>}/>
+        
+
       </Routes>
   )
 }
