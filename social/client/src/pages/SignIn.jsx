@@ -23,8 +23,8 @@ function SignIn() {
     setLoading(true);
     try {
       const data = await loginUser({ userName, password });
-      console.log("Login Success:", data);
-      dispatch(setUserData(data))
+      console.log("Login Success:", data.user);
+      dispatch(setUserData(data.user));
       setLoading(false);
       // Optionally, redirect to another page or show a success message here
       navigate('/home'); // Redirect to Home or any other page

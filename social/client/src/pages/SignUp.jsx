@@ -30,8 +30,8 @@ function SignUp() {
     setLoading(true);
     try {
       const data = await signUpUser({ name, userName, email, password });
-      console.log("Signup Success:", data);
-      dispatch(setUserData(data))
+      console.log("Signup Success:", data.newUser);
+      dispatch(setUserData(data.newUser))
       setLoading(false);
       
       // Optionally, redirect to another page or show a success message here   
