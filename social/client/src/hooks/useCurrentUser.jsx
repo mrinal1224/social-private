@@ -13,7 +13,7 @@ function useCurrentUser() {
       try {
         const result = await getCurrentUser();
         console.log("Current User:", result.user);
-        dispatch(setUserData(result));
+        dispatch(setUserData(result.user));
       } catch (error) {
         console.error("Error fetching user:", error);
       }

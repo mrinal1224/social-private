@@ -29,11 +29,7 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
 
-    profession: {
-      type: String,
-    },
-
-    gender:{
+   gender:{
       type:String,
       enum:['male' , 'female']
     },

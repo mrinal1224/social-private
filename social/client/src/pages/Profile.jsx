@@ -1,7 +1,7 @@
 // src/pages/Profile.jsx
 import React, { useEffect } from "react";
 import { getProfile } from "../apiCalls/authCalls";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfileData } from "../redux/userSlice";
 import logo from "../assets/socialLogo.png";
@@ -11,6 +11,8 @@ function Profile() {
   const { userName } = useParams();
   const dispatch = useDispatch();
   const { profileData, userData } = useSelector((state) => state.user);
+  const navigate = useNavigate()
+
 
   const handleProfile = async (userName) => {
     try {
@@ -88,7 +90,8 @@ function Profile() {
 
               {/* Right: Edit Profile button (only for logged-in user’s own profile) */}
               {userData?.userName === profileData.userName && (
-                <button
+                <button 
+                  onClick={() => navigate(`/editprofile/`)}
                   className="mt-4 sm:mt-0 px-5 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-md hover:opacity-90 transition"
                 >
                   Edit Profile

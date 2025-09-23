@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL } from "./config";
+import EditProfile from "../pages/EditProfile";
 
 // axios instance for cleaner code (optional, but good practice)
 const api = axios.create({
@@ -49,6 +50,15 @@ export const getCurrentUser = async ()=>{
 export const getProfile = async(userName)=>{
   try {
     const response =  await api.get(`/api/user/getProfile/${userName}` , {withCredentials:true})
+    return response.data
+  } catch (error) {
+     throw error.response?.data?.message || "Failed to fetch user profile data";
+  }
+}
+
+export const editProfile = async(formData)=>{
+   try {
+    const response =  await api.post(`/api/user/editprofile` , formData, {withCredentials:true})
     return response.data
   } catch (error) {
      throw error.response?.data?.message || "Failed to fetch user profile data";
