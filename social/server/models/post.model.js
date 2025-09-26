@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema(
       enum: ["image", "video"],
       required: true,
     },
-    mediaUrl: {
+    media: {
       type: String,
       required: true,
     },
@@ -28,17 +28,17 @@ const postSchema = new mongoose.Schema(
     ],
     comments: [
       {
-        user: {
+        author: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
-        text: {
+        message: {
           type: String,
           required: true,
         },
         createdAt: {
           type: Date,
-          default: Date.now,
+          default: Date.now(),
         },
       },
     ],

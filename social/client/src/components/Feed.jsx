@@ -1,9 +1,20 @@
 // src/components/FeedDesign.jsx
 import React from "react";
 import logo from "../assets/socialLogo.png";
-import Nav from './Nav'
+import Nav from "./Nav";
+import Post from "./post.jsx";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 function FeedDesign() {
+  useEffect(()=>{
+    
+  })
+
+
+  const { postData } = useSelector((state) => state.post);
+  console.log(postData);
   return (
     <div
       className="
@@ -13,7 +24,6 @@ function FeedDesign() {
       "
     >
       <div className="w-[95%] lg:max-w-[85%] min-h-[90vh] rounded-2xl flex flex-col overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.25)] bg-white">
-        
         {/* Header */}
         <div className="w-full h-[80px] flex items-center justify-between px-6 border-b border-neutral-200">
           <img src={logo} alt="Logo" className="w-[100px]" />
@@ -45,40 +55,12 @@ function FeedDesign() {
             ))}
         </div>
 
-        <Nav/>
+        <Nav />
 
         {/* Feed Posts */}
         <div className="flex-1 w-full px-6 py-6 overflow-y-auto bg-neutral-50">
-          {Array(4)
-            .fill("")
-            .map((_, i) => (
-              <div
-                key={i}
-                className="w-full bg-white border border-neutral-200 rounded-xl p-4 mb-6 shadow-sm"
-              >
-                {/* Post header */}
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-[40px] h-[40px] rounded-full bg-neutral-300"></div>
-                  <div>
-                    <p className="font-semibold text-sm">User {i + 1}</p>
-                    <p className="text-xs text-neutral-500">2h ago</p>
-                  </div>
-                </div>
-
-                {/* Post image */}
-                <div className="w-full h-[220px] bg-neutral-200 rounded-lg mb-3"></div>
-
-                {/* Post actions + caption */}
-                <div className="flex gap-4 mb-2">
-                  <div className="w-[22px] h-[22px] bg-neutral-300 rounded-full"></div>
-                  <div className="w-[22px] h-[22px] bg-neutral-300 rounded-full"></div>
-                  <div className="w-[22px] h-[22px] bg-neutral-300 rounded-full"></div>
-                </div>
-                <p className="text-sm text-neutral-700">
-                  This is a sample caption for post {i + 1}.
-                </p>
-              </div>
-            ))}
+          {postData &&
+            postData.map((post, index) => <Post post={post} key={index} />)}
         </div>
       </div>
     </div>

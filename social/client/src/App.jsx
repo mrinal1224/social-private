@@ -10,6 +10,8 @@ import useCurrentUser from './hooks/useCurrentuser'
 import { Navigate } from 'react-router-dom'
 import Profile from './pages/Profile'
 import EditProfile from './pages/EditProfile'
+import Upload from './pages/Upload'
+
 
 
 
@@ -27,6 +29,7 @@ function App() {
         <Route path='/home' element={userData?<Home/>:<Navigate to='/signin'/>}/>
         <Route path='/profile/:userName' element={userData?<Profile/>:<Navigate to='/signin'/>}/>
         <Route path='/editprofile' element={userData?<EditProfile/>:<Navigate to='/signin'/>}/>
+         <Route path='/upload' element={userData?<Upload/>:<Navigate to='/signin'/>}/>
 
         
 

@@ -6,6 +6,7 @@ import connectDB from './config/db.js';
 import authRouter from './routes/auth.routes.js';
 import userRouter from './routes/user.routes.js';
 import cookieParser from 'cookie-parser';
+import postRouter from './routes/post.routes.js';
 
 
 
@@ -36,6 +37,7 @@ app.use(cookieParser());
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+app.use('/api/post', postRouter);
 
 // Start server
 app.listen(PORT, () => {
