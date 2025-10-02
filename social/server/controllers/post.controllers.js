@@ -24,7 +24,7 @@ export const uploadPost = async(req , res)=>{
         await  user.save()
 
     const populatedPost = await Post.findById(post._id).populate("author" , 'name username profileImage')
-
+   
     return res.status(201).json(populatedPost)
  } catch (error) {
     return res.status(500).json({message:`upload Error ${error}`})

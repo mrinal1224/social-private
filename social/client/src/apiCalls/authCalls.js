@@ -65,6 +65,16 @@ export const editProfile = async(formData)=>{
   }
 }
 
+export const getAllPosts = async()=>{
+    try {
+    const response =  await api.get(`/api/post/getAll`)
+    console.log(response)
+    return response.data
+  } catch (error) {
+     throw error.response?.data?.message || "Failed to fetch user posts data"
+  }
+}
+
 
 
 

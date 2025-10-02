@@ -9,8 +9,8 @@ const postRouter=express.Router()
 
 postRouter.post("/upload",isAuth, upload.single("media"),uploadPost)
 postRouter.get("/getAll",isAuth,getAllPosts)
-postRouter.get("/like/:postId",isAuth,like)
+// postRouter.get("/like/:postId",isAuth,like)
 
-postRouter.post("/comment/:postId",isAuth,comment)
+// postRouter.post("/comment/:postId",isAuth,comment)
 
 export default postRouter

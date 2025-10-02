@@ -11,6 +11,7 @@ import { Navigate } from 'react-router-dom'
 import Profile from './pages/Profile'
 import EditProfile from './pages/EditProfile'
 import Upload from './pages/Upload'
+import useAllPosts from './hooks/useAllPosts'
 
 
 
@@ -19,6 +20,7 @@ import Upload from './pages/Upload'
 
 function App() {
     useCurrentUser();
+    useAllPosts()
     const {userData} = useSelector(state=>state.user)
   return (
       <Routes>
