@@ -75,6 +75,64 @@ export const getAllPosts = async()=>{
   }
 }
 
+// ✅ NEW: Like API
+export const likePost = async(postId) => {
+  try {
+    const response = await api.post(`/api/post/like/${postId}`, {}, {withCredentials:true})
+    return response.data
+  } catch (error) {
+    throw error.response?.data?.message || "Failed to like post";
+  }
+}
+
+// ✅ NEW: Comment API
+export const commentOnPost = async(postId, message) => {
+  try {
+    const response = await api.post(`/api/post/comment/${postId}`, {message}, {withCredentials:true})
+    return response.data
+  } catch (error) {
+    throw error.response?.data?.message || "Failed to comment on post";
+  }
+}
+
+
+// Story APIs
+export const uploadStory = async(formData) => {
+  try {
+    const response = await api.post(`/api/story/upload`, formData, {withCredentials:true})
+    return response.data
+  } catch (error) {
+    throw error.response?.data?.message || "Failed to upload story";
+  }
+}
+
+export const getAllStories = async() => {
+  try {
+    const response = await api.get(`/api/story/getAll`, {withCredentials:true})
+    return response.data
+  } catch (error) {
+    throw error.response?.data?.message || "Failed to fetch stories";
+  }
+}
+
+export const viewStory = async(storyId) => {
+  try {
+    const response = await api.post(`/api/story/view/${storyId}`, {}, {withCredentials:true})
+    return response.data
+  } catch (error) {
+    throw error.response?.data?.message || "Failed to view story";
+  }
+}
+
+export const deleteStory = async(storyId) => {
+  try {
+    const response = await api.delete(`/api/story/delete/${storyId}`, {withCredentials:true})
+    return response.data
+  } catch (error) {
+    throw error.response?.data?.message || "Failed to delete story";
+  }
+}
+
 
 
 

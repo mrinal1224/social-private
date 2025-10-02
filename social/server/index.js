@@ -7,6 +7,7 @@ import authRouter from './routes/auth.routes.js';
 import userRouter from './routes/user.routes.js';
 import cookieParser from 'cookie-parser';
 import postRouter from './routes/post.routes.js';
+import storyRouter from './routes/story.routes.js';
 
 
 
@@ -38,6 +39,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/post', postRouter);
+app.use('/api/story', storyRouter);
 
 // Start server
 app.listen(PORT, () => {
