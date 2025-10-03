@@ -4,8 +4,10 @@ import {
   editProfile,
   getCurrentUser,
   getProfile,
+  suggestedUsers
 } from "../controllers/user.controllers.js";
 import { upload } from "../middlewares/multer.js";
+
 
 const userRouter = express.Router();
 
@@ -22,6 +24,12 @@ userRouter.get(
   "/getProfile/:userName",
   isAuth,
   getProfile
+);
+
+userRouter.get(
+  "/suggested",
+  isAuth,
+  suggestedUsers
 );
 
 

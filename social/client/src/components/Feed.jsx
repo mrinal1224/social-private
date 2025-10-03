@@ -8,9 +8,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 function FeedDesign() {
-  useEffect(()=>{
-    
-  })
+  
 
 
   const { postData } = useSelector((state) => state.post);

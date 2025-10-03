@@ -1,11 +1,35 @@
-// src/components/LeftHomeDesign.jsx
-import React from "react";
+import React, { useState } from "react";
 import logo from "../assets/socialLogo.png";
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../apiCalls/authCalls";
+import { clearUserData } from "../redux/userSlice";
+import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
+import SuggestedUsers from "./SuggestedUsers";
 
 function LeftHome() {
-  const {userData} = useSelector(state=>state.user)
+  const { userData } = useSelector((state) => state.user);
+  const { suggestedUsers } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+
+    setIsLoggingOut(true);
+    try {
+      await logoutUser();
+      dispatch(clearUserData());
+      navigate("/signin");
+    } catch (error) {
+      console.error("Logout error:", error);
+      alert(error);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
   return (
     <div
       className="
@@ -29,16 +53,26 @@ function LeftHome() {
       <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
         <div className="flex items-center gap-3">
           <div className="w-[60px] h-[60px] rounded-full overflow-hidden border border-neutral-300">
-            <img src={userData.profileImage}  alt="profile" className="w-full h-full object-cover" />
+            <img
+              src={userData?.profileImage}
+              alt="profile"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
-            <div className="font-semibold text-sm text-neutral-900">{userData.userName}</div>
-            <div className="text-xs text-neutral-500">{userData.name}</div>
+            <div className="font-semibold text-sm text-neutral-900">
+              {userData?.userName}
+            </div>
+            <div className="text-xs text-neutral-500">{userData?.name}</div>
           </div>
         </div>
-        <div className="text-[#0095F6] text-sm font-semibold cursor-pointer hover:underline">
-          Log Out
-        </div>
+        <button
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="text-[#0095F6] text-sm font-semibold cursor-pointer hover:underline disabled:opacity-50 disabled:cursor-not-allowed min-w-[60px] flex items-center justify-center"
+        >
+          {isLoggingOut ? <ClipLoader size={16} color="#0095F6" /> : "Log Out"}
+        </button>
       </div>
 
       {/* Suggested Users */}
@@ -46,27 +80,9 @@ function LeftHome() {
         <h1 className="text-sm font-semibold text-neutral-800">
           Suggested Users
         </h1>
-        {Array(3)
-          .fill("")
-          .map((_, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between w-full"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-[50px] h-[50px] rounded-full bg-neutral-200"></div>
-                <div>
-                  <p className="font-medium text-sm text-neutral-800">
-                    user_{i + 1}
-                  </p>
-                  <p className="text-xs text-neutral-500">Suggested</p>
-                </div>
-              </div>
-              <button className="text-[#0095F6] text-xs font-semibold hover:underline">
-                Follow
-              </button>
-            </div>
-          ))}
+        {suggestedUsers.slice(0, 5).map((suggestion, index) => (
+          <SuggestedUsers key={index} suggestion={suggestion} />
+        ))}
       </div>
     </div>
   );

@@ -1,25 +1,59 @@
-// src/pages/Profile.jsx
-import React, { useEffect } from "react";
-import { getProfile } from "../apiCalls/authCalls";
+import React, { useEffect, useState } from "react";
+import { getProfile, followUser, unfollowUser, getFollowStatus } from "../apiCalls/authCalls";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfileData } from "../redux/userSlice";
 import logo from "../assets/socialLogo.png";
 import Nav from "../components/Nav";
+import { ClipLoader } from "react-spinners";
 
 function Profile() {
   const { userName } = useParams();
   const dispatch = useDispatch();
   const { profileData, userData } = useSelector((state) => state.user);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
+  const [followersCount, setFollowersCount] = useState(0);
+
+  const isOwnProfile = userData?.userName === userName;
 
   const handleProfile = async (userName) => {
     try {
       const result = await getProfile(userName);
       dispatch(setProfileData(result));
+      setFollowersCount(result.followers?.length || 0);
+
+      // Check follow status if not own profile
+      if (!isOwnProfile) {
+        const statusResult = await getFollowStatus(result._id);
+        setIsFollowing(statusResult.isFollowing);
+      }
     } catch (error) {
       console.error("Error fetching profile data:", error);
+    }
+  };
+
+  const handleFollowToggle = async () => {
+    if (!profileData?._id || followLoading) return;
+
+    setFollowLoading(true);
+    try {
+      if (isFollowing) {
+        await unfollowUser(profileData._id);
+        setIsFollowing(false);
+        setFollowersCount(prev => prev - 1);
+      } else {
+        await followUser(profileData._id);
+        setIsFollowing(true);
+        setFollowersCount(prev => prev + 1);
+      }
+    } catch (error) {
+      console.error("Follow toggle error:", error);
+      alert(error);
+    } finally {
+      setFollowLoading(false);
     }
   };
 
@@ -32,7 +66,7 @@ function Profile() {
   if (!profileData) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-neutral-100">
-        <div className="text-lg">Loading profile...</div>
+        <ClipLoader size={50} color="#0095F6" />
       </div>
     );
   }
@@ -88,15 +122,37 @@ function Profile() {
                 </div>
               </div>
 
-              {/* Right: Edit Profile button (only for logged-in user’s own profile) */}
-              {userData?.userName === profileData.userName && (
-                <button 
-                  onClick={() => navigate(`/editprofile/`)}
-                  className="mt-4 sm:mt-0 px-5 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-md hover:opacity-90 transition"
-                >
-                  Edit Profile
-                </button>
-              )}
+              {/* Right: Action Button */}
+              <div className="mt-4 sm:mt-0">
+                {isOwnProfile ? (
+                  <button 
+                    onClick={() => navigate(`/editprofile/`)}
+                    className="px-5 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-md hover:opacity-90 transition"
+                  >
+                    Edit Profile
+                  </button>
+                ) : (
+                  <button 
+                    onClick={handleFollowToggle}
+                    disabled={followLoading}
+                    className={`
+                      px-5 py-2 rounded-lg font-semibold shadow-md transition
+                      ${isFollowing 
+                        ? 'bg-neutral-200 text-neutral-800 hover:bg-neutral-300' 
+                        : 'bg-blue-500 text-white hover:bg-blue-600'
+                      }
+                      disabled:opacity-50 disabled:cursor-not-allowed
+                      min-w-[100px]
+                    `}
+                  >
+                    {followLoading ? (
+                      <ClipLoader size={16} color={isFollowing ? "#000" : "#fff"} />
+                    ) : (
+                      isFollowing ? "Unfollow" : "Follow"
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Stats */}
@@ -109,7 +165,7 @@ function Profile() {
               </div>
               <div>
                 <div className="font-bold text-lg">
-                  {profileData.followers?.length || 0}
+                  {followersCount}
                 </div>
                 <div className="text-neutral-500 text-sm">Followers</div>
               </div>
